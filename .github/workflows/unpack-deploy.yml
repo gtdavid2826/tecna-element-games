@@ -1,0 +1,41 @@
+name: Unpack TECNA deployment
+
+on:
+  push:
+    paths:
+      - 'deploy.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Unpack deployment bundle
+        run: |
+          test -f deploy.zip || { echo 'deploy.zip not found'; exit 1; }
+          rm -f index.html element-battle.html element-shootout.html vercel.json
+          unzip -o deploy.zip -d .
+          rm -f deploy.zip
+
+      - name: Remove obsolete segmented payloads
+        run: rm -rf assets/battle assets/shootout || true
+
+      - name: Commit deployed game files
+        run: |
+          git config user.name 'TECNA Deploy Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No deployment changes to commit.'
+          else
+            git commit -m 'Deploy TECNA luxury cloud games'
+            git push
+          fi
