@@ -4,10 +4,13 @@
 - index.html：遊戲入口
 - element-battle.html：元素大作戰（豪華視覺 + Supabase 雲端排行榜）
 - element-shootout.html：元素神槍手（豪華視覺 + Supabase 雲端排行榜）
-- assets/：gzip 壓縮資料分段，瀏覽器啟動時自動還原完整豪華版
 - vercel.json：Vercel 靜態部署設定
 
-## 架構
-GitHub 保存版本 → Vercel 提供公開遊戲網址 → Supabase 儲存全體學生共用排行榜。
+## 部署
+1. 建立 GitHub repository（建議名稱：tecna-element-games）
+2. 將本資料夾四個網站檔案上傳至 repository 根目錄
+3. 在 Vercel 選 Add New → Project → Import Git Repository
+4. Framework Preset 選 Other，Build Command 留空，Output Directory 留空
+5. Deploy
 
-Supabase 已寫入遊戲，不需另設環境變數。
+Supabase 已寫入 HTML，無需另設環境變數。
