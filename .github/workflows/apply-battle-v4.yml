@@ -1,0 +1,65 @@
+name: Apply TECNA Battle V4 Update
+
+on:
+  push:
+    paths:
+      - 'battle_v4_delta/READY'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild V4 from verified delta
+        shell: bash
+        run: |
+          if [ ! -f battle_v4_delta/READY ]; then
+            echo 'V4 delta already applied; nothing to do.'
+            exit 0
+          fi
+          python - <<'PY'
+          from pathlib import Path
+          import base64, zlib, json, hashlib
+
+          target = Path('element-battle.html')
+          old = target.read_bytes()
+          payload = ''.join(p.read_text().strip() for p in sorted(Path('battle_v4_delta').glob('part-*.txt')))
+          spec = json.loads(zlib.decompress(base64.b64decode(payload)))
+
+          old_sha = hashlib.sha256(old).hexdigest()
+          if old_sha != spec['old_sha256']:
+              raise SystemExit(f'Old file SHA mismatch: {old_sha} != {spec["old_sha256"]}')
+
+          old_lines = old.splitlines(keepends=True)
+          out = bytearray()
+          for op in spec['ops']:
+              if op[0] == 'c':
+                  out.extend(b''.join(old_lines[op[1]:op[2]]))
+              elif op[0] == 'i':
+                  out.extend(base64.b64decode(op[1]))
+              else:
+                  raise SystemExit(f'Unknown delta op: {op[0]}')
+
+          new = bytes(out)
+          new_sha = hashlib.sha256(new).hexdigest()
+          if new_sha != spec['new_sha256']:
+              raise SystemExit(f'New file SHA mismatch: {new_sha} != {spec["new_sha256"]}')
+
+          target.write_bytes(new)
+          print('Verified V4 SHA-256:', new_sha)
+          PY
+
+          rm -rf battle_v4_delta battle_update_v4
+          git config user.name 'TECNA Deploy Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Update element battle to V4 element scope'
+          git push
