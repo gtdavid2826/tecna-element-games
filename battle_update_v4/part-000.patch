@@ -1,0 +1,56 @@
+diff --git a/element-battle.html b/element-battle.html
+index c40965b..d24ac38 100644
+--- a/element-battle.html
++++ b/element-battle.html
+@@ -216,0 +217,40 @@ button,input{font:inherit}button{cursor:pointer}.app{width:min(1220px,100%);marg
++
++/* ===== Per-question countdown v3 ===== */
++.question-timer-pill{
++  min-width:112px;
++  font-variant-numeric:tabular-nums;
++  border-color:rgba(99,218,255,.34)!important;
++  transition:.18s ease;
++}
++.question-timer-pill b{
++  display:inline-block;
++  min-width:22px;
++  text-align:right;
++  color:#dff8ff;
++}
++.question-timer-pill.warning{
++  border-color:rgba(255,208,86,.75)!important;
++  background:rgba(89,61,4,.44)!important;
++  box-shadow:0 0 16px rgba(255,205,70,.14);
++}
++.question-timer-pill.warning b{color:#ffe072}
++.question-timer-pill.danger{
++  border-color:rgba(255,72,101,.85)!important;
++  background:rgba(100,9,30,.58)!important;
++  animation:questionTimerPulse .72s ease-in-out infinite alternate;
++}
++.question-timer-pill.danger b{color:#ff8ca0}
++@keyframes questionTimerPulse{
++  from{transform:scale(1);box-shadow:0 0 0 rgba(255,67,103,0)}
++  to{transform:scale(1.035);box-shadow:0 0 18px rgba(255,67,103,.28)}
++}
++.timeout-flash{
++  animation:timeoutFlash .55s ease;
++}
++@keyframes timeoutFlash{
++  0%{box-shadow:0 0 0 rgba(255,56,88,0)}
++  35%{box-shadow:inset 0 0 0 9999px rgba(255,35,71,.10)}
++  100%{box-shadow:0 0 0 rgba(255,56,88,0)}
++}
++/* ===== end countdown v3 ===== */
++
+@@ -228 +268 @@ button,input{font:inherit}button{cursor:pointer}.app{width:min(1220px,100%);marg
+-      <div class="microcopy">200 題正式題庫｜第一關 100 題：全部 A 族＋指定進階元素｜第二關性質＋Boss 綜合戰</div>
++      <div class="microcopy">200 題正式題庫｜第一關 100 題：Z=1–38、47–56、74、78–88、92｜第二關性質＋Boss 綜合戰</div>
+@@ -234 +274 @@ button,input{font:inherit}button{cursor:pointer}.app{width:min(1220px,100%);marg
+-      <div class="small">同一瀏覽器／網站來源保存</div>
++      <div class="small">全班／全校共用雲端排行榜</div>
+@@ -243 +283 @@ button,input{font:inherit}button{cursor:pointer}.app{width:min(1220px,100%);marg
+-    <div class="stats right"><div class="pill timer">⏱ <b id="timerText">00:00</b></div><div class="pill">分數 <b id="scoreText">0</b></div><div class="pill combo">Combo ×<span id="comboText">0</span></div><div id="ultimateMistakePill" class="pill danger-pill" style="display:none">失誤 <b id="ultimateMistakeText">0 / 10</b></div></div>
++    <div class="stats right"><div class="pill timer">⏱ 總時間 <b id="timerText">00:00</b></div><div id="questionTimerPill" class="pill question-timer-pill">⏳ 本題 <b id="questionTimerText">15</b>s</div><div class="pill">分數 <b id="scoreText">0</b></div><div class="pill combo">Combo ×<span id="comboText">0</span></div><div id="ultimateMistakePill" class="pill danger-pill" style="display:none">失誤 <b id="ultimateMistakeText">0 / 5</b></div></div>
+@@ -274,2 +314,2 @@ button,input{font:inherit}button{cursor:pointer}.app{width:min(1220px,100%);marg
+-const ELEMENTS = [{"atomicNumber":1,"name":"氫","symbol":"H","group":"IA"},{"atomicNumber":2,"name":"氦","symbol":"He","group":"VIIIA"},{"atomicNumber":3,"name":"鋰","symbol":"Li","group":"IA"},{"atomicNumber":4,"name":"鈹","symbol":"Be","group":"IIA"},{"atomicNumber":5,"name":"硼","symbol":"B","group":"IIIA"},{"atomicNumber":6,"name":"碳","symbol":"C","group":"IVA"},{"atomicNumber":7,"name":"氮","symbol":"N","group":"VA"},{"atomicNumber":8,"name":"氧","symbol":"O","group":"VIA"},{"atomicNumber":9,"name":"氟","symbol":"F","group":"VIIA"},{"atomicNumber":10,"name":"氖","symbol":"Ne","group":"VIIIA"},{"atomicNumber":11,"name":"鈉","symbol":"Na","group":"IA"},{"atomicNumber":12,"name":"鎂","symbol":"Mg","group":"IIA"},{"atomicNumber":13,"name":"鋁","symbol":"Al","group":"IIIA"},{"atomicNumber":14,"name":"矽","symbol":"Si","group":"IVA"},{"atomicNumber":15,"name":"磷","symbol":"P","group":"VA"},{"atomicNumber":16,"name":"硫","symbol":"S","group":"VIA"},{"atomicNumber":17,"name":"氯","symbol":"Cl","group":"VIIA"},{"atomicNumber":18,"name":"氬","symbol":"Ar","group":"VIIIA"},{"atomicNumber":19,"name":"鉀","symbol":"K","group":"IA"},{"atomicNumber":20,"name":"鈣","symbol":"Ca","group":"IIA"},{"atomicNumber":21,"name":"鈧","symbol":"Sc","group":"B"},{"atomicNumber":22,"name":"鈦","symbol":"Ti","group":"B"},{"atomicNumber":23,"name":"釩","symbol":"V","group":"B"},{"atomicNumber":24,"name":"鉻","symbol":"Cr","group":"B"},{"atomicNumber":25,"name":"錳","symbol":"Mn","group":"B"},{"atomicNumber":26,"name":"鐵","symbol":"Fe","group":"B"},{"atomicNumber":27,"name":"鈷","symbol":"Co","group":"B"},{"atomicNumber":28,"name":"鎳","symbol":"Ni","group":"B"},{"atomicNumber":29,"name":"銅","symbol":"Cu","group":"B"},{"atomicNumber":30,"name":"鋅","symbol":"Zn","group":"B"},{"atomicNumber":31,"name":"鎵","symbol":"Ga","group":"IIIA"},{"atomicNumber":32,"name":"鍺","s
